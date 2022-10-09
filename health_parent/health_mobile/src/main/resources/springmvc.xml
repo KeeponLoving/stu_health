@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 下面是一个简化配置，相当于在容器中配置了HandlerMapping、HandlerAdapter
+        和HandlerExceptionResolver 三个特殊的bean，
+        且在容器中注册了一系列支持HTTP消息转换的bean -->
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="stu.gdut.controller"/>
+    <!-- 将/resources/路径下的资源映射为/res/**虚拟路径的资源 -->
+    <mvc:resources mapping="/css/**" location="/css/" />
+    <mvc:resources mapping="/fonts/**" location="/fonts/" />
+    <mvc:resources mapping="/img/**" location="/img/" />
+    <mvc:resources mapping="/pages/**" location="/pages/" />
+    <mvc:resources mapping="/plugins/**" location="/plugins/" />
+
+    <!-- 指定应用名称 -->
+    <dubbo:application name="health_mobile">
+        <dubbo:parameter key="qos.port" value="44444"/>
+    </dubbo:application>
+
+    <!--指定服务注册中心地址-->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+    <!--批量扫描-->
+    <dubbo:annotation package="stu.gdut.controller" />
+    <!--
+        超时全局设置 10分钟
+        check=false 不检查服务提供方，开发阶段建议设置为false
+        check=true 启动时检查服务提供方，如果服务提供方没有启动则报错
+    -->
+    <dubbo:consumer timeout="600000" check="false"/>
+    <import resource="spring-redis.xml"></import>
+</beans>

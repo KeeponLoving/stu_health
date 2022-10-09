@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 根元素是mapper，该元素的namespace属性值相当于该mapper的唯一标识 -->
+<mapper namespace="stu.gdut.dao.RoleMapper">
+    <!-- 根据用户ID查询关联的角色 -->
+    <select id="findByUserId" resultType="role">
+        select r.*
+        from t_role r, t_user_role ur
+        where r.id = ur.role_id and ur.user_id = #{userId}
+    </select>
+</mapper>

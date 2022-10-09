@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://mybatis.org/schema/mybatis-spring
+	http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <!-- C3P0数据源 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close"
+          p:driverClass="com.mysql.cj.jdbc.Driver"
+          p:jdbcUrl="jdbc:mysql://localhost:3306/health?serverTimezone=GMT%2B8"
+          p:user="root"
+          p:password="wgf12345"/>
+    <!-- 配置MyBatis的核心组件：SqlSessionFactory
+        并为该SqlSessionFactory配置它依赖的DataSource
+        还指定了类加载路径下mybatis-config.xml文件作为MyBatis的核心配置文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:mybatis-config.xml"/>
+
+    <!-- 自动扫描指定包及其子包下的所有Mapper类 -->
+    <mybatis:scan base-package="stu.gdut.dao"/>
+</beans>
